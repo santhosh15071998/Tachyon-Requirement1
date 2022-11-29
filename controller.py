@@ -63,53 +63,6 @@ def read_from_dynamodb(id):
     )
     return response
 
-def update_in_movie(id, data:dict):
-    response = MovieTable.update_item(
-        Key = {
-            'id': id
-        },
-        AttributeUpdates={
-            'title': {
-                'Value'  : data['title'],
-                'Action' : 'PUT' # # available options = DELETE(delete), PUT(set/update), ADD(increment)
-            },
-            'director': {
-                'Value'  : data['director'],
-                'Action' : 'PUT'
-            }
-        },
-        ReturnValues = "UPDATED_NEW"  # returns the new updated values
-    )
-    return response
-
-def upvote_a_movie(id):
-    response = MovieTable.update_item(
-        Key = {
-            'id': id
-        },
-        AttributeUpdates = {
-            'upvotes': {
-                'Value'  : 1,
-                'Action' : 'ADD'
-            }
-        },
-        ReturnValues = "UPDATED_NEW"
-    )
-    response['Attributes']['upvotes'] = int(response['Attributes']['upvotes'])
-    return response
-
-def modify_director_for_movie(id, director):
-    response = MovieTable.update_item(
-        Key = {
-            'id': id
-        },
-        UpdateExpression = 'SET info.director = :director', #set director to new value
-        #ConditionExpression = '', # execute until this condition fails # no condition
-        ExpressionAttributeValues = { # Value for the variables used in the above expressions
-            ':new_director': director
-        },
-        ReturnValues = "UPDATED_NEW"  #what to return
-    )
     return response
 
 def delete_from_movie(id):
